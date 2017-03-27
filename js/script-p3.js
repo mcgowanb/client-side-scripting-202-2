@@ -1,5 +1,7 @@
 var startDate, endDate;
 var formatString = "MMMM Do YYYY HH:mm";
+var currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?id=2961423&APPID=8c6860362c19a97e94d507247ba0e59a&units=metric";
+var historicWeatherURL = "http://api.openweathermap.org/data/2.5/forecast?id=2961423&APPID=8c6860362c19a97e94d507247ba0e59a&units=metric";
 $(document).ready(function () {
     var page = location.href.split("/").slice(-1).toString();
     setMenuPressed(page);
@@ -7,8 +9,7 @@ $(document).ready(function () {
 
     var averageTemp = 0, lowestTemp = 9999;
     var locationName;
-    var url = "http://api.openweathermap.org/data/2.5/forecast?id=2961423&APPID=8c6860362c19a97e94d507247ba0e59a&units=metric";
-    $.getJSON(url, function (data) {
+    $.getJSON(historicWeatherURL, function (data) {
         var records = new Array;
         var tempRanges = new Array;
         var windIntervals = new Array;
