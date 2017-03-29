@@ -3,6 +3,7 @@ var formatString = "MMMM Do YYYY HH:mm";
 var currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?id=2961423&APPID=8c6860362c19a97e94d507247ba0e59a&units=metric";
 var historicWeatherURL = "http://api.openweathermap.org/data/2.5/forecast?id=2961423&APPID=8c6860362c19a97e94d507247ba0e59a&units=metric";
 var locationName;
+var temperatureIcon = " °C";
 var averageTemp = 0, highTemp = 0, lowestTemp = 9999;
 
 
@@ -44,8 +45,13 @@ $(document).ready(function () {
         endDate = moment(records[records.length - 1][0]).format(formatString);
 
         displyMainGraph(windIntervals, records, avgWindSpeed, averageTemp);
-        console.log(lowestTemp);
-        console.log(highTemp);
+        $("#temp-low").text(lowestTemp + temperatureIcon);
+        $("#temp-high").text(highTemp + temperatureIcon);
+    });
+
+    $.getJSON(currentWeatherURL, function (data) {
+        $("#temp-current").text(data.main.temp + temperatureIcon);
+        console.log(data);
     });
 
 });
