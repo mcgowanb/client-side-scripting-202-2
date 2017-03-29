@@ -1,6 +1,8 @@
 $(document).ready(function(){
     var page = location.href.split("/").slice(-1).toString();
     setMenuPressed(page);
+	$(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
+
 });
 
 function setMenuPressed(page){
@@ -16,3 +18,4 @@ function setMenuPressed(page){
             break;
     }
 }
+
