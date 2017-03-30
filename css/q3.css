@@ -46,3 +46,16 @@
 .graph{
     height: 400px;
 }
+i:not(.temp) {
+    padding-top: 15px;
+}
+.panel-heading{
+    min-height: 95px;
+}
+.medium{
+    font-size: 24px;
+}
+.other{
+    float: right;
+    padding-top: 13px;
+}

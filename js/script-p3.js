@@ -5,13 +5,19 @@ var historicWeatherURL = "http://api.openweathermap.org/data/2.5/forecast?id=296
 var locationName;
 var temperatureIcon = " °C";
 var averageTemp = 0, highTemp = 0, lowestTemp = 9999;
-
+var weatherIcons;
 
 $(document).ready(function () {
-    var page = location.href.split("/").slice(-1).toString();
+    var page = location.href.split("/").slice(-1).toString().split("?")[0];
     setMenuPressed(page);
 
+    //load json file for cloud icons
+    $.getJSON("json/icons.json", function (data) {
+        weatherIcons = data;
+    });
 
+
+    //historic weather data
     $.getJSON(historicWeatherURL, function (data) {
         var records = new Array;
         var windIntervals = new Array;
@@ -44,19 +50,21 @@ $(document).ready(function () {
         startDate = moment(records[0][0]).format(formatString);
         endDate = moment(records[records.length - 1][0]).format(formatString);
 
-        displyMainGraph(windIntervals, records, avgWindSpeed, averageTemp);
+        displayMainGraph(windIntervals, records, avgWindSpeed, averageTemp);
         $("#temp-low").text(lowestTemp + temperatureIcon);
         $("#temp-high").text(highTemp + temperatureIcon);
     });
 
+    //get current weather infromation
     $.getJSON(currentWeatherURL, function (data) {
         $("#temp-current").text(data.main.temp + temperatureIcon);
-        console.log(data);
+        setWeatherInformation(data.weather[0], data.clouds);
+        setOtherWeatherData(data.main);
     });
 
 });
 
-function displyMainGraph(windIntervals, records, avgSpeed, averageTemp) {
+function displayMainGraph(windIntervals, records, avgSpeed, averageTemp) {
     $('#main-graph').highcharts({
         chart: {
             zoomType: 'x'
@@ -235,62 +243,6 @@ function displyMainGraph(windIntervals, records, avgSpeed, averageTemp) {
 }
 
 
-function loadTemperatureGraph(records, windIntervals, locationName, averageTemp) {
-    $('#temp-graph').highcharts({
-        chart: {
-            zoomType: 'x'
-        },
-        title: {
-            text: 'Temperature information for ' + locationName
-        },
-        credits: {
-            enabled: false
-        },
-
-        subtitle: {
-            text: 'for the period ' + startDate + ' to ' + endDate
-        },
-        xAxis: {
-            type: 'datetime'
-        },
-        yAxis: {
-            title: {
-                text: 'Temp C°'
-            },
-            plotLines: [{
-                value: averageTemp,
-                color: 'green',
-                dashStyle: 'shortdash',
-                width: 2,
-                label: {
-                    text: 'Average Temp ' + averageTemp.toFixed(2) + ' C°'
-                }
-            }]
-        },
-        tooltip: {
-            valueSuffix: '°C'
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: [
-            {
-                name: "Temperature °C",
-                data: records
-            },
-            {
-                name: 'Wind Speed',
-                data: windIntervals,
-                color: '#5CB85C'
-            }
-        ]
-    });
-}
-
-
 function setMenuPressed(page) {
     switch (page) {
         case "index.html":
@@ -303,4 +255,29 @@ function setMenuPressed(page) {
             $("#p-3").addClass("active");
             break;
     }
+}
+
+function setWeatherInformation(data, clouds) {
+    var prefix = 'wi wi-';
+    var code = data.id;
+    var icon = weatherIcons[code].icon;
+
+    if (!(code > 699 && code < 800) && !(code > 899 && code < 1000)) {
+        icon = 'day-' + icon;
+    }
+    icon = prefix + icon;
+    $("#weather-icon").addClass(icon);
+    var $weatherString = $("<div><span class='medium'>" + data.main + "</span></div>");
+    var $cloudString = $("<div><small>Cloud cover: " + clouds.all + "%</small></div>");
+    $("#weather-data").append($weatherString).append($cloudString);
+}
+
+
+function setOtherWeatherData(data) {
+    var $data = [
+        $("<div><span class='medium'>Atmospheric Pressure: </span><span class='small other'>" + data.pressure + " hPa</span></div>"),
+        $("<div><span class='medium'>Humidity: </span><span class='small other'>" + data.humidity + "%</span></div>")
+    ];
+
+    $("#other-weather").append($data);
 }
