@@ -17,45 +17,49 @@ $(document).ready(function () {
     });
 
 
-    //historic weather data
+    //historic weather data loaded via api call to highcharts
     $.getJSON(historicWeatherURL, function (data) {
-        var records = new Array;
+        var tempData = new Array;
         var windIntervals = new Array;
         var timeValues = new Array;
         var count = 0, avgWindSpeed = 0;
         locationName = data.city.name;
 
+        //iterate through the results set
         $.each(data.list, function (key, val) {
             //multiplying by 1000 to match js milliseconds for date time
             var time = val.dt * 1000;
             var temp = val.main.temp;
             avgWindSpeed += val.wind.speed;
             averageTemp += temp;
-
+            //getting the lowest temp from the result set
             if (temp < lowestTemp) {
                 lowestTemp = temp;
             }
-
+            //getting the highest temp from the result set
             if (temp > highTemp) {
                 highTemp = temp;
             }
 
-            records.push([time, temp]);
+            tempData.push([time, temp]);
             windIntervals.push([time, val.wind.speed]);
             timeValues.push(time);
             count++;
         });
         averageTemp /= count;
         avgWindSpeed /= count;
-        startDate = moment(records[0][0]).format(formatString);
-        endDate = moment(records[records.length - 1][0]).format(formatString);
+        //getting start and end dates for display from the dataset
+        startDate = moment(tempData[0][0]).format(formatString);
+        endDate = moment(tempData[tempData.length - 1][0]).format(formatString);
 
-        displayMainGraph(windIntervals, records, avgWindSpeed, averageTemp);
+        //calling function for graph
+        displayMainGraph(windIntervals, tempData, avgWindSpeed, averageTemp);
+        //update dom with high and low temp including the icons
         $("#temp-low").text(lowestTemp + temperatureIcon);
         $("#temp-high").text(highTemp + temperatureIcon);
     });
 
-    //get current weather infromation
+    //get current weather infromation via api call
     $.getJSON(currentWeatherURL, function (data) {
         $("#temp-current").text(data.main.temp + temperatureIcon);
         setWeatherInformation(data.weather[0], data.clouds);
@@ -64,7 +68,8 @@ $(document).ready(function () {
 
 });
 
-function displayMainGraph(windIntervals, records, avgSpeed, averageTemp) {
+//main highcharts function
+function displayMainGraph(windIntervals, tempData, avgSpeed, averageTemp) {
     $('#main-graph').highcharts({
         chart: {
             zoomType: 'x'
@@ -98,6 +103,7 @@ function displayMainGraph(windIntervals, records, avgSpeed, averageTemp) {
                 minorGridLineWidth: 0,
                 gridLineWidth: 0,
                 alternateGridColor: null,
+                //average windspeed and temperature lines
                 plotLines: [
                     {
                         value: avgSpeed,
@@ -120,6 +126,7 @@ function displayMainGraph(windIntervals, records, avgSpeed, averageTemp) {
                         }
                     }
                 ],
+                //plot lines across graph for varying weather types
                 plotBands: [{ // Light air
                     from: 0.3,
                     to: 1.5,
@@ -208,6 +215,7 @@ function displayMainGraph(windIntervals, records, avgSpeed, averageTemp) {
         tooltip: {
             shared: true
         },
+        //dataSeries
         series: [
             {
                 name: 'Wind Speed',
@@ -221,7 +229,7 @@ function displayMainGraph(windIntervals, records, avgSpeed, averageTemp) {
             {
                 name: "Temperature",
                 type: 'spline',
-                data: records,
+                data: tempData,
                 tooltip: {
                     valueSuffix: ' ( °C)'
                 }
@@ -242,7 +250,7 @@ function displayMainGraph(windIntervals, records, avgSpeed, averageTemp) {
     });
 }
 
-
+//controlling the pressed button effect on the menu bar
 function setMenuPressed(page) {
     switch (page) {
         case "index.html":
@@ -257,6 +265,7 @@ function setMenuPressed(page) {
     }
 }
 
+//set the real time weather information at the top of the page
 function setWeatherInformation(data, clouds) {
     var prefix = 'wi wi-';
     var code = data.id;
@@ -272,7 +281,7 @@ function setWeatherInformation(data, clouds) {
     $("#weather-data").append($weatherString).append($cloudString);
 }
 
-
+//setting other weather information on the page
 function setOtherWeatherData(data) {
     var $data = [
         $("<div><span class='medium'>Atmospheric Pressure: </span><span class='small other'>" + data.pressure + " hPa</span></div>"),
