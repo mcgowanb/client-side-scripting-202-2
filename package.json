@@ -2,7 +2,13 @@
   "name": "CA-2-ClientSideScripting-202",
   "version": "0.0.1",
   "devDependencies": {
+    "del": "^2.2.2",
     "gulp": "^3.9.1",
-    "gulp-clean-css": "^3.0.4"
+    "gulp-clean-css": "^3.0.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-jsonminify": "^1.0.0",
+    "gulp-minify": "0.0.15",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-uglify": "^2.1.2"
   }
 }

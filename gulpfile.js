@@ -4,14 +4,44 @@ var minify = require('gulp-minify');
 var minifyCSSObject = require('gulp-minify-css');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
+var del = require('del');
+var jsonminify = require('gulp-jsonminify');
+
+var paths = {
+    src: '*',
+    srcHTML: '*.html',
+    srcCSS: 'css/*.css',
+    srcJS: '*.js',
+    srcJSON: 'json/*.json',
+    dist: 'dist',
+    distCSS: 'dist/css',
+    distCSSmin: 'dist/css.min',
+    distJS: 'dist/js',
+    distJSmin: 'dist/js.min',
+    fonts: 'fonts/*',
+    distFonts: 'dist/fonts'
+};
 
 
 gulp.task('default', function () {
-    return [minifyJS, minifyCSS, combineCSS, combineJS];
+    return [minifyJSON, htmlCopy, fontCopy, minifyJS, minifyCSS, combineCSS, combineJS];
 });
 
+//minify json files
+var minifyJSON = gulp.src([paths.srcJSON])
+    .pipe(jsonminify())
+    .pipe(gulp.dest(paths.dist));
 
-var minifyCSS = gulp.src('css/*.css')
+//copy html files to dist folder
+var htmlCopy = gulp.src(paths.srcHTML)
+    .pipe(gulp.dest(paths.dist));
+
+//copy fonts
+var fontCopy = gulp.src(paths.fonts)
+    .pipe(gulp.dest(paths.distFonts));
+
+//minify css folder
+var minifyCSS = gulp.src([paths.srcCSS])
     .pipe(cleanCSS({
         compatibility: 'ie8',
         ext: {
@@ -19,54 +49,29 @@ var minifyCSS = gulp.src('css/*.css')
             min: '.min.css'
         }
     }))
-    .pipe(gulp.dest('dist/css'));
+    .pipe(gulp.dest(paths.distCSSmin));
 
-var minifyJS = gulp.src('js/*.js')
+
+//minify js folders
+var minifyJS = gulp.src([paths.srcJSON, 'jquery.jflow/*.js'])
     .pipe(minify({
         ext: {
             src: '-debug.js',
             min: '.min.js'
         }
     }))
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest(paths.distJSmin));
 
+
+//combine js into single file
 var combineJS = gulp.src('js/*.js')
     .pipe(concat('all.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest(paths.dist));
 
+
+//combine css into single file
 var combineCSS = gulp.src('css/*.css')
     .pipe(minifyCSSObject())
     .pipe(concat('all.min.css'))
-    .pipe(gulp.dest('dist/'));
-
-gulp.task('compress-css', function () {
-    return gulp.src('css/*.css')
-        .pipe(cleanCSS({compatibility: 'ie8'}))
-        .pipe(gulp.dest('dist/css'));
-});
-
-gulp.task('compress-js', function () {
-    gulp.src('js/*.js')
-        .pipe(minify({
-            ext: {
-                src: '-debug.js',
-                min: '.js'
-            }
-        }))
-        .pipe(gulp.dest('dist/js'))
-});
-
-gulp.task('combine-js', function () {
-    gulp.src('js/*.js')
-        .pipe(concat('all.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('dist/'))
-});
-
-gulp.task('combine-css', function () {
-    gulp.src('css/*.css')
-        .pipe(minifyCSS())
-        .pipe(concat('all.min.css'))
-        .pipe(gulp.dest('dist/'))
-});
+    .pipe(gulp.dest(paths.dist));
