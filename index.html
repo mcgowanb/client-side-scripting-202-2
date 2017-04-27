@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
-<meta name="author" content="">
+<meta name="author: Kate O'Neill" content="">
 <title>Client Side Scripting CA-2</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/p1.css" rel="stylesheet">
@@ -15,26 +15,8 @@
 <script src="js/jqBootstrapValidation.js"></script>
   <!-- Include postcode plugin file -->
   <script src="https://getaddress.io/js/jquery.getAddress-2.0.5.min.js"></script>
-  <style type="text/css">
-    #map
-    {
-      height:400px;
-      width:400px;
-      display:block;
-    }
-    form .required label:after {
-      color: #e32;
-      content: '*';
-      display: inline;
-    }
-      .main
-      {
-        padding-top:50px;
-      }
-
-  </style>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnGFkOVLfkOcnJjrmTMf7zSTW-PoBBCv8"></script>
-  <script src="js/script-p1.js"></script>
+
 
 </head>
 
@@ -57,33 +39,20 @@
 <div class="container main">
   <h1>Delivery Details</h1>
     <form class="form-horizontal" action="javascript:void(0)" id="form" novalidate>
-      <div class="control-group required">
-        <label class="control-label" for="email">Email address</label>
-        <div class="controls">
-          <input type="email" name="email" id="email" required>
-          <p class="help-block">Email address we can contact you on</p>
+      <div class="col-md-6">
+        <div class="control-group">
+          <!-- Postcode field -->
+          <div id="postcode_lookup"></div>
+          <div id="map"></div>
+          <div id="text"></div>
         </div>
       </div>
-      <div class="control-group required">
-        <label class="control-label" for="emailAgain">Email again</label>
-        <div class="controls">
-          <input type="email" data-validation-matches-match="email" data-validation-matches-message="Must match email address entered above" id="emailAgain" name="emailAgain">
-          <p class="help-block">And again, to check for spelling mistakes</p>
-        </div>
-      </div>
-      <div class="control-group">
-        <!-- Postcode field -->
-        <div id="postcode_lookup"></div>
-        <div id="map"></div>
-        <div id="text"></div>
-
-
+      <div class="col-md-3">
         <label class="control-label" for="postcode">Post Code</label>
         <div class="controls">
           <input type="text" name="postcode" id="postcode" required>
           <p class="help-block">Postcode for delivery</p>
         </div>
-
         <!-- Add to your existing form -->
         <label class="control-label" for="line1">First Address Line</label>
         <div>
@@ -109,127 +78,69 @@
         <div>
           <input id="county" type="text">
         </div>
+
+
+
       </div>
 
+<div class="col-md-3">
       <div class="control-group">
-        <label class="control-label" for="terms-and-conditions">Legal</label>
-        <div class="controls required">
-          <label class="checkbox">
-            <input type="checkbox" id="terms-and-conditions" name="terms-and-conditions" required data-validation-required-message="You must agree to the terms and conditions">
-            I agree to the <a href="#">terms and conditions</a> </label>
-          <p class="help-block"></p>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <label class="control-label">Quality Control</label>
+        <div class="control-group required">
+        <label class="control-label" for="email">Email address</label>
         <div class="controls">
-          <label class="checkbox">
-            <input type="checkbox" name="qualityControl[]" value="fast" data-validation-minchecked-minchecked="2" data-validation-minchecked-message="Choose two" data-validation-maxchecked-maxchecked="2" data-validation-maxchecked-message="You can't have it all ways" >
-            Fast </label>
-          <label class="checkbox">
-            <input type="checkbox" name="qualityControl[]" value="cheap">
-            Cheap </label>
-          <label class="checkbox">
-            <input type="checkbox" name="qualityControl[]" value="good">
-            Good </label>
-          <p class="help-block"></p>
+          <input type="email" name="email" id="email" required>
+          <p class="help-block">Email address we can contact you on</p>
         </div>
       </div>
+      <div class="control-group required">
+        <label class="control-label" for="emailAgain">Email again</label>
+        <div class="controls">
+          <input type="email" data-validation-matches-match="email" data-validation-matches-message="Must match email address entered above" id="emailAgain" name="emailAgain">
+          <p class="help-block">And again, to check for spelling mistakes</p>
+        </div>
+      </div>
+      </div>
+  <div class="control-group">
+    <label class="control-label" for="terms-and-conditions">Legal</label>
+    <div class="controls required">
+      <label class="checkbox">
+        <input type="checkbox" id="terms-and-conditions" name="terms-and-conditions" required data-validation-required-message="You must agree to the terms and conditions">
+        I agree to the <a href="#">terms and conditions</a> </label>
+      <p class="help-block"></p>
+    </div>
+  </div>
 
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button>
-        <br />
-        (go ahead, nothing is sent anywhere) </div>
-   <!-- </form>
-    <form action="javascript:void(0)" id="form">-->
-      <!--<input type="text" id="postcode2" placeholder="Enter a postcode">-->
-      <input type="submit" value="Show me"/>
+  <div class="control-group">
+    <label class="control-label">Quality Control</label>
+    <div class="controls">
+      <label class="checkbox">
+        <input type="checkbox" name="qualityControl[]" value="fast" data-validation-minchecked-minchecked="2" data-validation-minchecked-message="Choose two" data-validation-maxchecked-maxchecked="2" data-validation-maxchecked-message="You can't have it all ways" >
+        Fast </label>
+      <label class="checkbox">
+        <input type="checkbox" name="qualityControl[]" value="cheap">
+        Cheap </label>
+      <label class="checkbox">
+        <input type="checkbox" name="qualityControl[]" value="good">
+        Good </label>
+      <p class="help-block"></p>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button>
+    <br />
+    (go ahead, nothing is sent anywhere) </div>
+
+</div>
+
 
     </form>
 
 
 
     <!-- Add after your form -->
-    <script>
-        $('#postcode_lookup').getAddress({
-                api_key: 'X6y_4h4sY0eO1EK0Np-oHg8049',
-            output_fields:{
-                line_1: '#line1',
-                    line_2: '#line2',
-                    line_3: '#line3',
-                    post_town: '#town',
-                    county: '#county',
-                    postcode: '#postcode'
-            },
-        <!--  Optionally register callbacks at specific stages -->
+  <script src="js/script-p1.js"></script>
 
-        onLookupSuccess: function(data){/* Your custom code */},
-        onLookupError: function(){/* Your custom code */},
-        onAddressSelected: function(elem,index){/* Your custom code */}
-        });
-
-        /////////
-        function getPosition(callback) {
-            // set up our geoCoder
-            var geocoder = new google.maps.Geocoder();
-
-            // get our postcode value
-            var postcode = document.getElementById("postcode").value;
-
-            //send value to google to get a longitude and latitude value
-            geocoder.geocode({'address': postcode}, function(results, status)
-            {
-                // callback with a status and result
-                if (status == google.maps.GeocoderStatus.OK)
-                {
-                    // send the values back in a JSON string
-                    callback({
-                        latt: results[0].geometry.location.lat(),
-                        long: results[0].geometry.location.lng()
-                    });
-                }
-            });
-        }
-        function setup_map(latitude, longitude) {
-            // create a JSON object with the values to mark the position
-            var _position = { lat: latitude, lng: longitude};
-
-            // add our default mapOptions
-            var mapOptions = {
-                zoom: 16,              // zoom level of the map
-                center: _position     // position to center
-            }
-
-            // load a map within the "map" div and display
-            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-            // add a marker to the map with the position of the longitude and latitude
-            var marker = new google.maps.Marker({
-                position: mapOptions.center,
-                map: map
-            });
-        }
-        window.onload = function() {
-            // first setup the map, with our default location of London
-            setup_map(51.5073509, -0.12775829999998223);
-
-            document.getElementById("form").onsubmit = function() {
-           //document.getElementById("opc_button").onclick = function() {
-                // when form is submitted, wait for a callback with the longitude and latitude values
-                getPosition(function(position){
-
-                    // log the position returned
-                    var text = document.getElementById("text")
-                    text.innerHTML = "Marker position: { Longitude: "+position.long+ ",  Latitude:"+position.latt+" }";
-
-                    // update the map with the new position
-                    setup_map(position.latt, position.long);
-                });
-            }
-        }
-
-    </script>
 
 
   </div>

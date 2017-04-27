@@ -21,6 +21,38 @@ function setMenuPressed(page){
 
 
 ///////////////////////////////
+$('#postcode_lookup').getAddress({
+    api_key: 'X6y_4h4sY0eO1EK0Np-oHg8049',
+    output_fields:{
+        line_1: '#line1',
+        line_2: '#line2',
+        line_3: '#line3',
+        post_town: '#town',
+        county: '#county',
+        postcode: '#postcode'
+
+
+
+    },
+    <!--  Optionally register callbacks at specific stages -->
+
+    onLookupSuccess: function(data){/* Your custom code */},
+    onLookupError: function(){/* Your custom code */},
+    //onAddressSelected: function(elem,index){/* Your custom code */}
+    onAddressSelected: function(){           //document.getElementById("opc_button").onclick = function() {
+        // when form is submitted, wait for a callback with the longitude and latitude values
+        getPosition(function(position){
+
+            // log the position returned
+            var text = document.getElementById("text")
+            text.innerHTML = "Marker position: { Longitude: "+position.long+ ",  Latitude:"+position.latt+" }";
+
+            // update the map with the new position
+            setup_map(position.latt, position.long);
+        });}
+});
+
+/////////
 function getPosition(callback) {
     // set up our geoCoder
     var geocoder = new google.maps.Geocoder();
@@ -48,7 +80,7 @@ function setup_map(latitude, longitude) {
 
     // add our default mapOptions
     var mapOptions = {
-        zoom: 16 ,             // zoom level of the map
+        zoom: 16,              // zoom level of the map
         center: _position     // position to center
     }
 
@@ -66,6 +98,7 @@ window.onload = function() {
     setup_map(51.5073509, -0.12775829999998223);
 
     document.getElementById("form").onsubmit = function() {
+        //document.getElementById("opc_button").onclick = function() {
         // when form is submitted, wait for a callback with the longitude and latitude values
         getPosition(function(position){
 

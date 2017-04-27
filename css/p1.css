@@ -1,0 +1,16 @@
+#map
+{
+    height:400px;
+    width:500px;
+    display:block;
+    margin-top: 20px;
+}
+form .required label:after {
+    color: #e32;
+    content: '*';
+    display: inline;
+}
+.main
+{
+    padding-top:50px;
+}
