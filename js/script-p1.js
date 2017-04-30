@@ -22,7 +22,7 @@ function setMenuPressed(page){
 
 ///////////////////////////////
 $('#postcode_lookup').getAddress({
-    api_key: 'X6y_4h4sY0eO1EK0Np-oHg8049',
+    api_key: 'uDICbErsV0Gh9YLS8RbKdA8455',
     output_fields:{
         line_1: '#line1',
         line_2: '#line2',
@@ -34,13 +34,9 @@ $('#postcode_lookup').getAddress({
 
 
     },
-    <!--  Optionally register callbacks at specific stages -->
-
-    onLookupSuccess: function(data){/* Your custom code */},
-    onLookupError: function(){/* Your custom code */},
-    //onAddressSelected: function(elem,index){/* Your custom code */}
-    onAddressSelected: function(){           //document.getElementById("opc_button").onclick = function() {
-        // when form is submitted, wait for a callback with the longitude and latitude values
+    <!--  Register callback at specific stage -->
+    onAddressSelected: function(){
+        // wait for a callback with the longitude and latitude values
         getPosition(function(position){
 
             // log the position returned

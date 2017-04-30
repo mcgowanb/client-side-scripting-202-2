@@ -21,6 +21,7 @@
 </head>
 
 <body>
+<!-- Top menu -->
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
@@ -36,6 +37,8 @@
     </div>
   </div>
 </nav>
+
+<!-- Page setup -->
 <div class="container main">
   <h1>Delivery Details</h1>
     <form class="form-horizontal" action="javascript:void(0)" id="form" novalidate>
@@ -53,12 +56,12 @@
           <input type="text" name="postcode" id="postcode" required>
           <p class="help-block">Postcode for delivery</p>
         </div>
-        <!-- Add to your existing form -->
+        <div class = "required">
         <label class="control-label" for="line1">First Address Line</label>
         <div>
           <input id="line1" type="text" name="line1">
         </div>
-
+        </div>
         <label>Second Address Line</label>
         <div>
           <input id="line2" type="text">
@@ -68,19 +71,18 @@
         <div>
           <input id="line3" type="text">
         </div>
-
+        <div class = "required">
         <label>Town</label>
         <div>
           <input id="town" type="text">
         </div>
-
+        </div>
+        <div class = "required">
         <label>County</label>
         <div>
           <input id="county" type="text">
         </div>
-
-
-
+        </div>
       </div>
 
 <div class="col-md-3">
@@ -95,7 +97,7 @@
       <div class="control-group required">
         <label class="control-label" for="emailAgain">Email again</label>
         <div class="controls">
-          <input type="email" data-validation-matches-match="email" data-validation-matches-message="Must match email address entered above" id="emailAgain" name="emailAgain">
+          <input type="email" data-validation-matches-match="email"  data-validation-matches-message="Must match email address entered above" id="emailAgain" name="emailAgain">
           <p class="help-block">And again, to check for spelling mistakes</p>
         </div>
       </div>
@@ -104,7 +106,7 @@
     <label class="control-label" for="terms-and-conditions">Legal</label>
     <div class="controls required">
       <label class="checkbox">
-        <input type="checkbox" id="terms-and-conditions" name="terms-and-conditions" required data-validation-required-message="You must agree to the terms and conditions">
+        <input type="checkbox" id="terms-and-conditions" name="terms-and-conditions"  required data-validation-required-message="You must agree to the terms and conditions">
         I agree to the <a href="#">terms and conditions</a> </label>
       <p class="help-block"></p>
     </div>
@@ -129,7 +131,7 @@
   <div class="form-actions">
     <button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button>
     <br />
-    (go ahead, nothing is sent anywhere) </div>
+    </div>
 
 </div>
 
@@ -138,7 +140,7 @@
 
 
 
-    <!-- Add after your form -->
+    <!-- Add javascript file -->
   <script src="js/script-p1.js"></script>
 
 
